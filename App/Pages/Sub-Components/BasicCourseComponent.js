@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import CourseDetails from '../CourseDetails';
+import BasicPythonCourseDetails from '../BasicPythonCourseDetails';
+import BasicReactJSCourseDetails from '../BasicReactJSCourseDetails';
 
 const BasicCourseComponent = ({ navigation }) => {
     const [name, setName] = useState('');
@@ -10,7 +11,7 @@ const BasicCourseComponent = ({ navigation }) => {
             <Text style={styles.heading}>Basic Popular Course</Text>
             <View style={styles.courseList}>
                 <TouchableOpacity 
-                    onPress={() => navigation.navigate('CourseDetails')}
+                    onPress={() => navigation.navigate('BasicPythonCourseDetails')}
                     style={styles.courseCard}
                 >
                     <Image
@@ -22,7 +23,7 @@ const BasicCourseComponent = ({ navigation }) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('CourseDetails')}
+                    onPress={() => navigation.navigate('BasicReactJSCourseDetails')}
                     style={styles.courseCard} 
                 >
                     <Image
