@@ -8,8 +8,8 @@ import {
 
 import Login from './App/Pages/Login';
 import Home from './App/Pages/Home';
-import CourseDetails from './App/Pages/CourseDetails';
-
+import BasicPythonCourseDetails from './App/Pages/BasicPythonCourseDetails';
+import BasicReactJSCourseDetails from './App/Pages/BasicReactJSCourseDetails';
 
 const Stack = createStackNavigator();
 
@@ -20,7 +20,8 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown:false }}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="CourseDetails" component={CourseDetails} />
+        <Stack.Screen name="BasicPythonCourseDetails" component={BasicPythonCourseDetails} />
+        <Stack.Screen name="BasicReactJSCourseDetails" component={BasicReactJSCourseDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );
