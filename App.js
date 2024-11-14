@@ -11,6 +11,7 @@ import Home from './App/Pages/Home';
 import BasicPythonCourseDetails from './App/Pages/BasicPythonCourseDetails';
 import BasicReactJSCourseDetails from './App/Pages/BasicReactJSCourseDetails';
 import CourseChapter from './App/Pages/CourseChapter';
+import PlayVideo from './App/Pages/PlayVideo';
 const Stack = createStackNavigator();
 
 
@@ -23,6 +24,7 @@ export default function App() {
         <Stack.Screen name="BasicPythonCourseDetails" component={BasicPythonCourseDetails} />
         <Stack.Screen name="BasicReactJSCourseDetails" component={BasicReactJSCourseDetails} />
         <Stack.Screen name="CourseChapter" component={CourseChapter} />
+        <Stack.Screen name="PlayVideo" component={PlayVideo} />
       </Stack.Navigator>
     </NavigationContainer>
   );
