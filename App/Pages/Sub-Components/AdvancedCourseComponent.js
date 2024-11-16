@@ -8,7 +8,7 @@ const AdvancedCourseComponent = ({ navigation }) => {
             <View style={styles.courseList}>
                 <TouchableOpacity 
                     style={styles.courseCard}
-                    onPress={() => navigation.navigate('ReactNativeCourseDetails')}
+                    onPress={() => navigation.navigate('BasicReactNaviveCourseDetails')}
                 >
                     <Image 
                         source={require('../../Assets/Images/advanced-course-1.png')} 
