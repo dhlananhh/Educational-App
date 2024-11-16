@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Dimensions, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Dimensions, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ProgressBar from '../Components/ProgressBar';
@@ -12,55 +12,81 @@ export default function CourseChapter() {
   const [chapter, setChapter] = useState([]);
   const [run, setRun] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   let chapterRef;
 
-  const getChapterData = (courseId) => {
-    fetch('https://67126da56c5f5ced66237d06.mockapi.io/task')
-      .then(response => response.json())
-      .then(data => {
-        if (!data || !data[0]) {
-          console.error('Invalid data format received');
-          return;
-        }
+  const getChapterData = async (courseId) => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        let chapterData;
-        switch(courseId) {
-          case 1:
-            chapterData = data[0].introduction;
-            break;
-          case 2:
-            chapterData = data[0].variables;
-            break;
-          case 3:
-            chapterData = data[0].datatypes;
-            break;
-          case 4:
-            chapterData = data[0].numbers;
-            break;
-          case 5:
-            chapterData = data[0].casting;
-            break;
-          default:
-            chapterData = [];
-        }
+      const response = await fetch('https://67126da56c5f5ced66237d06.mockapi.io/task');
+      const data = await response.json();
 
-        if (Array.isArray(chapterData)) {
-          setChapter(chapterData);
-          setProgress(0);
+      if (!data || !Array.isArray(data) || data.length === 0) {
+        throw new Error('Invalid data format received');
+      }
+
+      // Find the appropriate course
+      const course = data.find(course => {
+        if (courseId <= 5) {
+          return course.name === "Python Programming";
         } else {
-          console.error('Invalid chapter data format');
-          setChapter([]);
+          return course.name === "React Development";
         }
-      })
-      .catch(error => {
-        console.error('Error fetching chapter data:', error);
-        setChapter([]);
       });
+
+      if (!course || !course.lessons) {
+        throw new Error('Course not found or invalid course structure');
+      }
+
+      // Get the correct lesson section based on courseId
+      let chapterData;
+      if (courseId <= 5) {
+        // Python courses
+        const pythonSections = {
+          1: course.lessons.introduction,
+          2: course.lessons.variables,
+          3: course.lessons.datatypes,
+          4: course.lessons.number,
+          5: course.lessons.casting,
+        };
+        chapterData = pythonSections[courseId];
+      } else {
+        // React courses
+        const reactSections = {
+          6: course.lessons.introduction,
+          7: course.lessons.props_and_state,
+          8: course.lessons.lifecycle_methods,
+          9: course.lessons.functional_components,
+          10: course.lessons.class_components,
+          
+        };
+        chapterData = reactSections[courseId];
+      }
+
+      if (!chapterData || !Array.isArray(chapterData)) {
+        throw new Error(`No content available for course ID: ${courseId}`);
+      }
+
+      setChapter(chapterData);
+      setProgress(0);
+    } catch (error) {
+      console.error('Error in getChapterData:', error);
+      setError(error.message);
+      setChapter([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     if (params?.courseId) {
       getChapterData(params.courseId);
+    } else {
+      setError('No course ID provided');
+      setLoading(false);
     }
   }, [params?.courseId]);
 
@@ -82,14 +108,15 @@ export default function CourseChapter() {
 
   const onFinish = async () => {
     if (!params?.courseId) {
-      console.error('No courseId provided');
+      setError('No course ID provided');
       return;
     }
 
     try {
-      const completedCoursesStr = await AsyncStorage.getItem('completedCourses');
+      const storageKey = params.courseId <= 5 ? 'completedPythonCourses' : 'completedReactCourses';
+      const completedCoursesStr = await AsyncStorage.getItem(storageKey);
       let completedCourses = [];
-      
+
       try {
         completedCourses = completedCoursesStr ? JSON.parse(completedCoursesStr) : [];
       } catch (parseError) {
@@ -97,32 +124,65 @@ export default function CourseChapter() {
         completedCourses = [];
       }
 
-      if (!Array.isArray(completedCourses)) {
-        completedCourses = [];
-      }
-
       if (!completedCourses.includes(params.courseId)) {
         completedCourses.push(params.courseId);
-        await AsyncStorage.setItem('completedCourses', JSON.stringify(completedCourses));
+        await AsyncStorage.setItem(storageKey, JSON.stringify(completedCourses));
       }
-      navigation.navigate('BasicPythonCourseDetails');
+
+      const nextScreen = params.courseId <= 5 ? 'BasicPythonCourseDetails' : 'BasicReactJSCourseDetails';
+      navigation.navigate(nextScreen);
     } catch (error) {
       console.error('Error saving course completion:', error);
-      navigation.navigate('BasicPythonCourseDetails');
+      setError('Failed to save course progress');
     }
   };
 
+  // Loading state
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <View style={{ padding: 20, paddingTop: 50, flex: 1 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back-sharp" size={24} color="black" />
+        </TouchableOpacity>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ color: 'red', marginBottom: 10 }}>{error}</Text>
+          <TouchableOpacity 
+            onPress={() => params?.courseId && getChapterData(params.courseId)}
+            style={{
+              backgroundColor: Colors.primary,
+              padding: 10,
+              borderRadius: 7,
+            }}
+          >
+            <Text style={{ color: Colors.white }}>Retry</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
+  // Empty state
   if (chapter.length === 0) {
     return (
       <View style={{ padding: 20, paddingTop: 50, flex: 1 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back-sharp" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={{ textAlign: 'center', marginTop: 20 }}>Loading chapter content...</Text>
+        <Text style={{ textAlign: 'center', marginTop: 20 }}>No content available for this chapter</Text>
       </View>
     );
   }
 
+  // Main content
   return (
     <View style={{ padding: 20, paddingTop: 50, flex: 1 }}>
       <TouchableOpacity onPress={() => navigation.goBack()}>

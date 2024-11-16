@@ -21,7 +21,7 @@ const CourseDetails = ({ route, navigation }) => {
     useEffect(() => {
         const checkCompletedCourses = async () => {
             try {
-                const completedCoursesStr = await AsyncStorage.getItem('completedCourses');
+                const completedCoursesStr = await AsyncStorage.getItem('completedPythonCourses');
                 if (completedCoursesStr) {
                     const completed = JSON.parse(completedCoursesStr);
                     setCompletedCourses(completed);
