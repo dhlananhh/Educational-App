@@ -28,12 +28,13 @@ export default function CourseChapter() {
         throw new Error('Invalid data format received');
       }
 
-      // Find the appropriate course
       const course = data.find(course => {
         if (courseId <= 5) {
           return course.name === "Python Programming";
-        } else {
+        } else if (courseId <= 10) {
           return course.name === "React Development";
+        } else {
+          return course.name === "MySQL Development";
         }
       });
 
@@ -41,7 +42,6 @@ export default function CourseChapter() {
         throw new Error('Course not found or invalid course structure');
       }
 
-      // Get the correct lesson section based on courseId
       let chapterData;
       if (courseId <= 5) {
         // Python courses
@@ -53,7 +53,7 @@ export default function CourseChapter() {
           5: course.lessons.casting,
         };
         chapterData = pythonSections[courseId];
-      } else {
+      } else if (courseId <= 10) {
         // React courses
         const reactSections = {
           6: course.lessons.introduction,
@@ -61,9 +61,18 @@ export default function CourseChapter() {
           8: course.lessons.lifecycle_methods,
           9: course.lessons.functional_components,
           10: course.lessons.class_components,
-          
         };
         chapterData = reactSections[courseId];
+      } else {
+        // MySQL courses
+        const mysqlSections = {
+          11: course.lessons.introduction,
+          12: course.lessons.data_types,
+          13: course.lessons.tables,
+          14: course.lessons.queries,
+          15: course.lessons.optimization,
+        };
+        chapterData = mysqlSections[courseId];
       }
 
       if (!chapterData || !Array.isArray(chapterData)) {
@@ -113,7 +122,20 @@ export default function CourseChapter() {
     }
 
     try {
-      const storageKey = params.courseId <= 5 ? 'completedPythonCourses' : 'completedReactCourses';
+      let storageKey;
+      let nextScreen;
+
+      if (params.courseId <= 5) {
+        storageKey = 'completedPythonCourses';
+        nextScreen = 'BasicPythonCourseDetails';
+      } else if (params.courseId <= 10) {
+        storageKey = 'completedReactCourses';
+        nextScreen = 'BasicReactJSCourseDetails';
+      } else {
+        storageKey = 'completedMySQLCourses';
+        nextScreen = 'MySQLCourseDetails';
+      }
+
       const completedCoursesStr = await AsyncStorage.getItem(storageKey);
       let completedCourses = [];
 
@@ -129,7 +151,6 @@ export default function CourseChapter() {
         await AsyncStorage.setItem(storageKey, JSON.stringify(completedCourses));
       }
 
-      const nextScreen = params.courseId <= 5 ? 'BasicPythonCourseDetails' : 'BasicReactJSCourseDetails';
       navigation.navigate(nextScreen);
     } catch (error) {
       console.error('Error saving course completion:', error);
@@ -155,7 +176,7 @@ export default function CourseChapter() {
         </TouchableOpacity>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={{ color: 'red', marginBottom: 10 }}>{error}</Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             onPress={() => params?.courseId && getChapterData(params.courseId)}
             style={{
               backgroundColor: Colors.primary,
