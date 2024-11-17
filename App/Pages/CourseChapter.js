@@ -33,8 +33,10 @@ export default function CourseChapter() {
           return course.name === "Python Programming";
         } else if (courseId <= 10) {
           return course.name === "React Development";
-        } else {
+        } else if (courseId <= 15) {
           return course.name === "MySQL Development";
+        } else {
+          return course.name === "React Native Development";
         }
       });
 
@@ -63,7 +65,7 @@ export default function CourseChapter() {
           10: course.lessons.class_components,
         };
         chapterData = reactSections[courseId];
-      } else {
+      } else if (courseId <= 15) {
         // MySQL courses
         const mysqlSections = {
           11: course.lessons.introduction,
@@ -73,6 +75,16 @@ export default function CourseChapter() {
           15: course.lessons.optimization,
         };
         chapterData = mysqlSections[courseId];
+      } else {
+        // React Native courses
+        const reactNativeSections = {
+          16: course.lessons.getting_started,
+          17: course.lessons.state_and_lifecycle,
+          18: course.lessons.styling,
+          19: course.lessons.navigation,
+          20: course.lessons.networking,
+        };
+        chapterData = reactNativeSections[courseId];
       }
 
       if (!chapterData || !Array.isArray(chapterData)) {
@@ -131,9 +143,12 @@ export default function CourseChapter() {
       } else if (params.courseId <= 10) {
         storageKey = 'completedReactCourses';
         nextScreen = 'BasicReactJSCourseDetails';
-      } else {
+      } else if (params.courseId <= 15) {
         storageKey = 'completedMySQLCourses';
         nextScreen = 'MySQLCourseDetails';
+      } else {
+        storageKey = 'completedReactNativeCourses';
+        nextScreen = 'BasicReactNaviveCourseDetails';
       }
 
       const completedCoursesStr = await AsyncStorage.getItem(storageKey);

@@ -11,15 +11,13 @@ const ReactNativeCourseDetails = ({ route, navigation }) => {
     const course = route.params?.course;
 
     const courseTopics = [
-        { id: '01', title: 'Getting Started with React Native', courseId: 16 },
-        { id: '02', title: 'Components and Props', courseId: 17 },
-        { id: '03', title: 'State and Lifecycle', courseId: 18 },
-        { id: '04', title: 'Styling and Flexbox', courseId: 19 },
-        { id: '05', title: 'Navigation', courseId: 20 },
-        { id: '06', title: 'Handling User Input', courseId: 21 },
-        { id: '07', title: 'Network Requests', courseId: 22 },
-        { id: '08', title: 'Using Native Components', courseId: 23 },
-    ];
+        { id: '01', title: 'Getting Started with React Native & Components and Props', courseId: 16 },
+        { id: '02', title: 'State and Lifecycle & Handling User Input', courseId: 17 },
+        { id: '03', title: 'Styling and Flexbox & Using Native Components', courseId: 18 },
+        { id: '04', title: 'Navigation', courseId: 19 },
+        { id: '05', title: 'Network Requests', courseId: 20 },
+      ];
+      
 
     useEffect(() => {
         const checkCompletedCourses = async () => {
