@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Dimensions, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, Dimensions, FlatList, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ProgressBar from '../Components/ProgressBar';
@@ -219,6 +219,102 @@ export default function CourseChapter() {
   }
 
   // Main content
+  const renderChapterContent = ({ item, index }) => {
+    return (
+      <ScrollView
+        style={{
+          width: Dimensions.get('screen').width * 0.85,
+          marginRight: 15,
+        }}
+        contentContainerStyle={{
+          padding: 10,
+          paddingBottom: 80,
+        }}
+        showsVerticalScrollIndicator={false} 
+      >
+        <View>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 10 }}>
+            {item?.name || `Chapter ${index + 1}`}
+          </Text>
+          <Text>{item?.description || 'No description available'}</Text>
+
+          {item?.input && (
+            <View>
+              <View
+                style={{
+                  backgroundColor: Colors.black,
+                  padding: 20,
+                  borderRadius: 10,
+                  marginVertical: 10
+                }}
+              >
+                <Text style={{ color: Colors.white }}>{item.input}</Text>
+              </View>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: Colors.primary,
+                  width: 60,
+                  padding: 5,
+                  borderRadius: 5,
+                  marginTop: 20,
+                  display: 'flex',
+                  flexDirection: 'row',
+                }}
+                onPress={() => setRun(true)}
+              >
+                <Ionicons name="play-circle" size={20} color={Colors.white} />
+                <Text style={{ textAlign: 'center', marginLeft: 5, color: Colors.white }}>
+                  Run
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {run && (
+            <View style={{ marginTop: 15 }}>
+              <Text style={{ fontWeight: 'bold' }}>Output</Text>
+              <View
+                style={{
+                  backgroundColor: Colors.black,
+                  padding: 20,
+                  borderRadius: 10,
+                  marginTop: 10,
+                }}
+              >
+                <Text style={{ color: Colors.white }}>{item?.output || 'No output'}</Text>
+              </View>
+            </View>
+          )}
+        </View>
+
+        <View style={{ height: 60 }} />
+
+        <View style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: 10,
+          backgroundColor: 'white',
+        }}>
+          <TouchableOpacity
+            onPress={() => onClickNext(index)}
+            style={{
+              backgroundColor: index + 1 !== chapter.length ? Colors.primary : Colors.green,
+              padding: 10,
+              borderRadius: 7,
+              width: '100%',
+            }}
+          >
+            <Text style={{ textAlign: 'center', color: Colors.white }}>
+              {index + 1 !== chapter.length ? 'Next' : 'Finish'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    );
+  };
+
   return (
     <View style={{ padding: 20, paddingTop: 50, flex: 1 }}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -232,93 +328,9 @@ export default function CourseChapter() {
         ref={(ref) => {
           chapterRef = ref;
         }}
-        renderItem={({ item, index }) => (
-          <View
-            style={{
-              width: Dimensions.get('screen').width * 0.85,
-              marginRight: 15,
-              padding: 10,
-            }}
-          >
-            <Text style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 10 }}>
-              {item?.name || `Chapter ${index + 1}`}
-            </Text>
-            <Text>{item?.description || 'No description available'}</Text>
-            {item?.input ? (
-              <View>
-                <View
-                  style={{
-                    backgroundColor: Colors.black,
-                    padding: 20,
-                    borderRadius: 10,
-                    marginVertical: 10
-                  }}
-                >
-                  <Text style={{ color: Colors.white }}>{item.input}</Text>
-                </View>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: Colors.primary,
-                    width: 60,
-                    padding: 5,
-                    borderRadius: 5,
-                    marginTop: 20,
-                    display: 'flex',
-                    flexDirection: 'row',
-                  }}
-                  onPress={() => setRun(true)}
-                >
-                  <Ionicons name="play-circle" size={20} color={Colors.white} />
-                  <Text style={{ textAlign: 'center', marginLeft: 5, color: Colors.white }}>Run</Text>
-                </TouchableOpacity>
-              </View>
-            ) : null}
-            {run ? (
-              <View style={{ marginTop: 15 }}>
-                <Text style={{ fontWeight: 'bold' }}>Output</Text>
-                <View
-                  style={{
-                    backgroundColor: Colors.black,
-                    padding: 20,
-                    borderRadius: 10,
-                    marginTop: 10,
-                  }}
-                >
-                  <Text style={{ color: Colors.white }}>{item?.output || 'No output'}</Text>
-                </View>
-              </View>
-            ) : null}
-            {index + 1 !== chapter.length ? (
-              <TouchableOpacity
-                onPress={() => onClickNext(index)}
-                style={{
-                  backgroundColor: Colors.primary,
-                  padding: 10,
-                  borderRadius: 7,
-                  position: 'absolute',
-                  bottom: 0,
-                  width: '110%',
-                }}
-              >
-                <Text style={{ textAlign: 'center', color: Colors.white }}>Next</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={() => onClickNext(index)}
-                style={{
-                  backgroundColor: Colors.green,
-                  padding: 10,
-                  borderRadius: 7,
-                  position: 'absolute',
-                  bottom: 0,
-                  width: '110%',
-                }}
-              >
-                <Text style={{ textAlign: 'center', color: Colors.white }}>Finish</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        )}
+        renderItem={renderChapterContent}
+        showsHorizontalScrollIndicator={false}
+
       />
     </View>
   );
