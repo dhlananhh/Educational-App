@@ -19,7 +19,7 @@ const VideoCourseComponent = () => {
     const videos = [
         {
             title: "Python Tutorial for Beginners",
-            videoId: "kqtD5dpn9C8",
+            videoId: "_uQrJ0TkZlc",
             description: "Complete Python tutorial covering basics to advanced topics. This tutorial is designed for beginners who want to learn Python programming from scratch. It covers all the fundamental concepts and provides practical examples to help you understand the language better.",
             image: require('../../Assets/Images/video1.png')
         },

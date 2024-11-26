@@ -22,7 +22,7 @@ const AdvancedCourseComponent = ({ navigation }) => {
                     style={styles.courseCard} 
                     onPress={() => navigation.navigate('MySQLCourseDetails')}
                 >
-                    <Image 
+                    <Image
                         source={require('../../Assets/Images/advanced-course-2.png')} 
                         style={styles.courseImage}
                     />
