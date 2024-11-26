@@ -5,23 +5,23 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { SafeAreaView, ScrollView, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ReactCourseDetails = ({ route, navigation }) => {
+const MySQLCourseDetails = ({ route, navigation }) => {
     const [completedCourses, setCompletedCourses] = useState([]);
     const [progress, setProgress] = useState(0);
     const course = route.params?.course;
 
     const courseTopics = [
-        { id: '01', title: 'Introduction to Components', courseId: 6 },
-        { id: '02', title: 'Props and State', courseId: 7 },
-        { id: '03', title: 'Lifecycle Methods', courseId: 8 },
-        { id: '04', title: 'Functional Components', courseId: 9 },
-        { id: '05', title: 'Class Components', courseId: 10 },
+        { id: '01', title: 'Introduction to Databases', courseId: 11 },
+        { id: '02', title: 'SQL Basics & Data Types', courseId: 12 },
+        { id: '03', title: 'Tables & Relationships', courseId: 13 },
+        { id: '04', title: 'Queries & Functions', courseId: 14 },
+        { id: '05', title: 'Indexing & Optimization', courseId: 15 },
     ];
 
     useEffect(() => {
         const checkCompletedCourses = async () => {
             try {
-                const completedCoursesStr = await AsyncStorage.getItem('completedReactCourses');
+                const completedCoursesStr = await AsyncStorage.getItem('completedMySQLCourses');
                 if (completedCoursesStr) {
                     const completed = JSON.parse(completedCoursesStr);
                     setCompletedCourses(completed);
@@ -40,7 +40,7 @@ const ReactCourseDetails = ({ route, navigation }) => {
 
     const clearAllCompletions = async () => {
         try {
-            await AsyncStorage.removeItem('completedReactCourses');
+            await AsyncStorage.removeItem('completedMySQLCourses');
             setCompletedCourses([]);
             setProgress(0);
         } catch (error) {
@@ -48,7 +48,7 @@ const ReactCourseDetails = ({ route, navigation }) => {
         }
     };
 
-    const title = course ? course.title : 'React Development';
+    const title = course ? course.title : 'MySQL Development';
     const subtitle = course ? course.subtitle : 'By Tubeguruji';
 
     return (
@@ -97,7 +97,7 @@ const AboutCourse = () => (
     <View style={aboutStyles.container}>
         <Text style={aboutStyles.title}>About Course</Text>
         <Text style={aboutStyles.description}>
-            React is a powerful JavaScript library for building user interfaces, maintained by Facebook and a community of developers. Learn components, state management, and modern React development practices.
+            MySQL is one of the world's most popular open-source relational database management systems. Learn database design, SQL queries, optimization techniques, and best practices for building efficient database applications.
         </Text>
     </View>
 );
@@ -111,7 +111,7 @@ const CourseContent = ({ courseTopics, completedCourses, navigation }) => (
                 style={courseStyles.topicRow}
                 onPress={() => navigation.navigate('CourseChapter', { 
                     courseId: topic.courseId,
-                    courseType: 'react'
+                    courseType: 'mysql'
                 })}
             >
                 <Text style={courseStyles.topicNumber}>{topic.id}</Text>
@@ -263,4 +263,4 @@ const courseDetailsStyles = StyleSheet.create({
     },
 });
 
-export default ReactCourseDetails;
+export default MySQLCourseDetails;

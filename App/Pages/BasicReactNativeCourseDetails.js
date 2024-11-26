@@ -5,23 +5,24 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { SafeAreaView, ScrollView, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ReactCourseDetails = ({ route, navigation }) => {
+const ReactNativeCourseDetails = ({ route, navigation }) => {
     const [completedCourses, setCompletedCourses] = useState([]);
     const [progress, setProgress] = useState(0);
     const course = route.params?.course;
 
     const courseTopics = [
-        { id: '01', title: 'Introduction to Components', courseId: 6 },
-        { id: '02', title: 'Props and State', courseId: 7 },
-        { id: '03', title: 'Lifecycle Methods', courseId: 8 },
-        { id: '04', title: 'Functional Components', courseId: 9 },
-        { id: '05', title: 'Class Components', courseId: 10 },
-    ];
+        { id: '01', title: 'Getting Started with React Native & Components and Props', courseId: 16 },
+        { id: '02', title: 'State and Lifecycle & Handling User Input', courseId: 17 },
+        { id: '03', title: 'Styling and Flexbox & Using Native Components', courseId: 18 },
+        { id: '04', title: 'Navigation', courseId: 19 },
+        { id: '05', title: 'Network Requests', courseId: 20 },
+      ];
+      
 
     useEffect(() => {
         const checkCompletedCourses = async () => {
             try {
-                const completedCoursesStr = await AsyncStorage.getItem('completedReactCourses');
+                const completedCoursesStr = await AsyncStorage.getItem('completedReactNativeCourses');
                 if (completedCoursesStr) {
                     const completed = JSON.parse(completedCoursesStr);
                     setCompletedCourses(completed);
@@ -40,7 +41,7 @@ const ReactCourseDetails = ({ route, navigation }) => {
 
     const clearAllCompletions = async () => {
         try {
-            await AsyncStorage.removeItem('completedReactCourses');
+            await AsyncStorage.removeItem('completedReactNativeCourses');
             setCompletedCourses([]);
             setProgress(0);
         } catch (error) {
@@ -48,7 +49,7 @@ const ReactCourseDetails = ({ route, navigation }) => {
         }
     };
 
-    const title = course ? course.title : 'React Development';
+    const title = course ? course.title : 'React Native Fundamentals';
     const subtitle = course ? course.subtitle : 'By Tubeguruji';
 
     return (
@@ -97,7 +98,7 @@ const AboutCourse = () => (
     <View style={aboutStyles.container}>
         <Text style={aboutStyles.title}>About Course</Text>
         <Text style={aboutStyles.description}>
-            React is a powerful JavaScript library for building user interfaces, maintained by Facebook and a community of developers. Learn components, state management, and modern React development practices.
+            React Native is a popular framework for building native mobile applications using React. This course covers everything you need to know to build professional mobile apps for both iOS and Android platforms using a single codebase.
         </Text>
     </View>
 );
@@ -111,7 +112,7 @@ const CourseContent = ({ courseTopics, completedCourses, navigation }) => (
                 style={courseStyles.topicRow}
                 onPress={() => navigation.navigate('CourseChapter', { 
                     courseId: topic.courseId,
-                    courseType: 'react'
+                    courseType: 'react-native'
                 })}
             >
                 <Text style={courseStyles.topicNumber}>{topic.id}</Text>
@@ -263,4 +264,4 @@ const courseDetailsStyles = StyleSheet.create({
     },
 });
 
-export default ReactCourseDetails;
+export default ReactNativeCourseDetails;

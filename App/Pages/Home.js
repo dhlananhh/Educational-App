@@ -18,7 +18,7 @@ const Home = ({ navigation, route }) => {
             <BannerComponent />
             <VideoCourseComponent />
             <BasicCourseComponent navigation={navigation} />
-            <AdvancedCourseComponent navigation={navigation} />
+            <AdvancedCourseComponent />
         </ScrollView>
     );
 };

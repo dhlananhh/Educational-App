@@ -1,28 +1,34 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
-const AdvancedCourseComponent = () => {
+const AdvancedCourseComponent = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Advance Courses</Text>
             <View style={styles.courseList}>
-                <View style={styles.courseCard}>
+                <TouchableOpacity 
+                    style={styles.courseCard}
+                    onPress={() => navigation.navigate('BasicReactNaviveCourseDetails')}
+                >
                     <Image 
                         source={require('../../Assets/Images/advanced-course-1.png')} 
                         style={styles.courseImage}
                     />
                     <Text style={styles.courseTitle}>React Native</Text>
                     <Text style={styles.lessonCount}>15 Lessons</Text>
-                </View>
-                
-                <View style={styles.courseCard}>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                    style={styles.courseCard} 
+                    onPress={() => navigation.navigate('MySQLCourseDetails')}
+                >
                     <Image 
                         source={require('../../Assets/Images/advanced-course-2.png')} 
                         style={styles.courseImage}
                     />
                     <Text style={styles.courseTitle}>MySQL</Text>
                     <Text style={styles.lessonCount}>15 Lessons</Text>
-                </View>
+                </TouchableOpacity>
             </View>
         </View>
     );
