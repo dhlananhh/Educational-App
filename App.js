@@ -14,6 +14,7 @@ import MySQLCourseDetails from './App/Pages/MySQLCourseDatails';
 import BasicReactNativeCourseDetails from './App/Pages/BasicReactNativeCourseDetails'
 import CourseChapter from './App/Pages/CourseChapter';
 import PlayVideo from './App/Pages/PlayVideo';
+import { SearchScreen } from './App/Pages/SearchScreen';
 const Stack = createStackNavigator();
 
 
@@ -29,6 +30,7 @@ export default function App() {
         <Stack.Screen name="BasicReactNaviveCourseDetails" component={BasicReactNativeCourseDetails} />
         <Stack.Screen name="CourseChapter" component={CourseChapter} />
         <Stack.Screen name="PlayVideo" component={PlayVideo} />
+        <Stack.Screen name="SearchScreen" component={SearchScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
