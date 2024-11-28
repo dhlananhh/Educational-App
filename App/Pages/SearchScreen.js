@@ -65,7 +65,7 @@ const SearchScreen = ({ navigation }) => {
 
     const renderRecommendedCourseItem = ({ item }) => (
         <TouchableOpacity style={styles.recommendedCourseItem}>
-            <View style={{ width: '65%' }}>
+            <View style={{ width: '100%', paddingTop: 10 }}>
                 <Text style={styles.recommendedCourseTitle}>{item.name}</Text>
                 <Text style={styles.recommendedCourseAuthor}>{item.author}</Text>
                 <View style={styles.courseDetails}>
@@ -80,8 +80,7 @@ const SearchScreen = ({ navigation }) => {
             <Image
                 source={item.image}
                 style={{
-                    width: 70
-                    , height: 50, borderRadius: 10
+                    width: 70, height: 50, borderRadius: 10
                 }}
             />
         </TouchableOpacity>
@@ -89,7 +88,7 @@ const SearchScreen = ({ navigation }) => {
 
 
     return (
-        <ScrollView style={{ padding: 10, backgroundColor: '#fff', flex: 1 }}>
+        <ScrollView style={{ padding: 15, backgroundColor: '#fff', flex: 1, marginTop: 30 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginRight: 10 }}>
                     <Ionicons name='arrow-back' size={20} color='black' />
