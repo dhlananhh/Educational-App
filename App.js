@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-// import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   View,
@@ -23,10 +22,9 @@ import BasicReactNativeCourseDetails from './App/Pages/BasicReactNativeCourseDet
 import CourseChapter from './App/Pages/CourseChapter';
 import PlayVideo from './App/Pages/PlayVideo';
 import SearchScreen from './App/Pages/SearchScreen';
-
+import ReviewScreen from './App/Pages/ReviewScreen';
 
 const Stack = createStackNavigator();
-// const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 
@@ -38,7 +36,6 @@ export default function App() {
         <Stack.Screen name="SearchScreen" component={SearchScreen} />
         <Stack.Screen name="Home" component={Home} 
           options={({ route, navigation }) => ({
-            // Receive params as props of function options
             headerLeft: false,
             headerShadowVisible: false,
             headerTitle: "",
@@ -54,6 +51,7 @@ export default function App() {
         <Stack.Screen name="BasicReactNaviveCourseDetails" component={BasicReactNativeCourseDetails} />
         <Stack.Screen name="CourseChapter" component={CourseChapter} />
         <Stack.Screen name="PlayVideo" component={PlayVideo} />
+        <Stack.Screen name="ReviewScreen" component={ReviewScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
