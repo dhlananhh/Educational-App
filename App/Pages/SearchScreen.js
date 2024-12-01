@@ -25,7 +25,7 @@ const coursesData = [
         price: 29.99,
         category: 'Programming',
         description: 'Master mobile app development with React Native from scratch.',
-        image: require('../Assets/Images/advanced-course-1.png') 
+        image: require('../Assets/Images/Complete React Native Course.png') 
     },
     { 
         id: '2',
@@ -36,7 +36,7 @@ const coursesData = [
         price: 39.99,
         category: 'Programming',
         description: 'Deep dive into advanced mobile development techniques.',
-        image: require('../Assets/Images/advanced-course-1.png')
+        image: require('../Assets/Images/Advanced Mobile Development.png')
     },
     { 
         id: '3',
@@ -47,7 +47,7 @@ const coursesData = [
         price: 34.99,
         category: 'Programming',
         description: 'Comprehensive Flutter and Dart programming course.',
-        image: require('../Assets/Images/advanced-course-1.png')
+        image: require('../Assets/Images/Flutter & Dart Masterclass.png')
     },
     { 
         id: '4',
@@ -58,7 +58,7 @@ const coursesData = [
         price: 44.99,
         category: 'Design',
         description: 'Learn user experience design principles and techniques.',
-        image: require('../Assets/Images/advanced-course-1.png')
+        image: require('../Assets/Images/UX Design Fundamentals.png')
     },
     { 
         id: '5',
@@ -69,7 +69,7 @@ const coursesData = [
         price: 59.99,
         category: 'Data Science',
         description: 'Comprehensive machine learning and AI course for beginners.',
-        image: require('../Assets/Images/advanced-course-1.png')
+        image: require('../Assets/Images/Machine Learning Bootcamp.png')
     },
     { 
         id: '6',
@@ -80,8 +80,52 @@ const coursesData = [
         price: 49.99,
         category: 'Marketing',
         description: 'Advanced digital marketing techniques and strategies.',
-        image: require('../Assets/Images/advanced-course-1.png')
-    }
+        image: require('../Assets/Images/Digital Marketing Strategies.png')
+    },
+    {
+        id: '7',
+        title: 'Entrepreneurship Bootcamp',
+        instructor: 'Mark Cuban',
+        rating: 4.7,
+        students: 1800,
+        price: 49.99,
+        category: 'Business',
+        description: 'Learn to start and scale your business with actionable strategies.',
+        image: require('../Assets/Images/Entrepreneurship Bootcamp.png')
+    },
+    {
+        id: '8',
+        title: 'Finance for Non-Finance Professionals',
+        instructor: 'Robert Kiyosaki',
+        rating: 4.5,
+        students: 1400,
+        price: 39.99,
+        category: 'Business',
+        description: 'Understand financial concepts and how to apply them to business.',
+        image: require('../Assets/Images/Entrepreneurship Bootcamp.png')
+    },
+    {
+        id: '9',
+        title: 'Digital Photography Masterclass',
+        instructor: 'Annie Leibovitz',
+        rating: 4.8,
+        students: 1600,
+        price: 44.99,
+        category: 'Photography',
+        description: 'Master the art of digital photography with practical tips.',
+        image: require('../Assets/Images/Digital Photography Masterclass.png')
+    },
+    {
+        id: '10',
+        title: 'Portrait Photography Workshop',
+        instructor: 'Steve McCurry',
+        rating: 4.6,
+        students: 1000,
+        price: 29.99,
+        category: 'Photography',
+        description: 'Learn techniques to capture stunning portrait photographs.',
+        image: require('../Assets/Images/Digital Photography Masterclass.png')
+    },
 ];
 
 const SearchScreen = ({ navigation }) => {
