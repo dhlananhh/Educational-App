@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
     View, 
     Text, 
@@ -15,8 +15,79 @@ import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
+const coursesData = [
+    { 
+        id: '1',
+        title: 'Complete React Native Course', 
+        instructor: 'John Doe', 
+        rating: 4.5, 
+        students: 1200,
+        price: 29.99,
+        category: 'Programming',
+        description: 'Master mobile app development with React Native from scratch.',
+        image: require('../Assets/Images/advanced-course-1.png') 
+    },
+    { 
+        id: '2',
+        title: 'Advanced Mobile Development', 
+        instructor: 'Jane Smith', 
+        rating: 4.8, 
+        students: 950,
+        price: 39.99,
+        category: 'Programming',
+        description: 'Deep dive into advanced mobile development techniques.',
+        image: require('../Assets/Images/advanced-course-1.png')
+    },
+    { 
+        id: '3',
+        title: 'Flutter & Dart Masterclass', 
+        instructor: 'Mike Johnson', 
+        rating: 4.6, 
+        students: 800,
+        price: 34.99,
+        category: 'Programming',
+        description: 'Comprehensive Flutter and Dart programming course.',
+        image: require('../Assets/Images/advanced-course-1.png')
+    },
+    { 
+        id: '4',
+        title: 'UX Design Fundamentals', 
+        instructor: 'Sarah Lee', 
+        rating: 4.7, 
+        students: 1500,
+        price: 44.99,
+        category: 'Design',
+        description: 'Learn user experience design principles and techniques.',
+        image: require('../Assets/Images/advanced-course-1.png')
+    },
+    { 
+        id: '5',
+        title: 'Machine Learning Bootcamp', 
+        instructor: 'Alex Chen', 
+        rating: 4.9, 
+        students: 1100,
+        price: 59.99,
+        category: 'Data Science',
+        description: 'Comprehensive machine learning and AI course for beginners.',
+        image: require('../Assets/Images/advanced-course-1.png')
+    },
+    { 
+        id: '6',
+        title: 'Digital Marketing Strategies', 
+        instructor: 'Emma Wilson', 
+        rating: 4.4, 
+        students: 1300,
+        price: 49.99,
+        category: 'Marketing',
+        description: 'Advanced digital marketing techniques and strategies.',
+        image: require('../Assets/Images/advanced-course-1.png')
+    }
+];
+
 const SearchScreen = ({ navigation }) => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState(coursesData);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     const [hotTopics] = useState([
         'React Native', 
@@ -36,36 +107,28 @@ const SearchScreen = ({ navigation }) => {
         { name: 'Photography', icon: 'camera-outline', color: '#795548' }
     ]);
 
-    const [searchResults, setSearchResults] = useState([
-        { 
-            title: 'Complete React Native Course', 
-            instructor: 'John Doe', 
-            rating: 4.5, 
-            students: 1200,
-            price: 29.99,
-            image: require('../Assets/Images/advanced-course-1.png') 
-        },
-        { 
-            title: 'Advanced Mobile Development', 
-            instructor: 'Jane Smith', 
-            rating: 4.8, 
-            students: 950,
-            price: 39.99,
-            image: require('../Assets/Images/advanced-course-1.png')
-        },
-        { 
-            title: 'Flutter & Dart Masterclass', 
-            instructor: 'Mike Johnson', 
-            rating: 4.6, 
-            students: 800,
-            price: 34.99,
-            image: require('../Assets/Images/advanced-course-1.png')
-        }
-    ]);
-
     const handleSearch = () => {
-        console.log('Searching for:', searchTerm);
+        const filteredCourses = coursesData.filter(course => 
+            course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            course.instructor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            course.description.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        
+        const categoryFilteredCourses = selectedCategory
+            ? filteredCourses.filter(course => course.category === selectedCategory)
+            : filteredCourses;
+
+        setSearchResults(categoryFilteredCourses);
     };
+
+    const handleCategoryFilter = (categoryName) => {
+        setSelectedCategory(categoryName === selectedCategory ? null : categoryName);
+        handleSearch();
+    };
+
+    useEffect(() => {
+        handleSearch();
+    }, [searchTerm, selectedCategory]);
 
     const renderRecommendedCourseItem = ({ item }) => (
         <TouchableOpacity 
@@ -82,7 +145,7 @@ const SearchScreen = ({ navigation }) => {
                     {item.title}
                 </Text>
                 <Text style={styles.courseInstructor}>
-                    {item.instructor}
+                    {item.instructor} | {item.category}
                 </Text>
                 <View style={styles.courseMetrics}>
                     <View style={styles.ratingContainer}>
@@ -102,7 +165,6 @@ const SearchScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            {/* Fixed Header Section */}
             <View>
                 <View style={styles.searchContainer}>
                     <TouchableOpacity 
@@ -120,7 +182,10 @@ const SearchScreen = ({ navigation }) => {
                             onChangeText={setSearchTerm}
                             onSubmitEditing={handleSearch}
                         />
-                        <TouchableOpacity style={styles.searchIcon}>
+                        <TouchableOpacity 
+                            style={styles.searchIcon} 
+                            onPress={handleSearch}
+                        >
                             <Ionicons name="search" size={20} color="#2092FF" />
                         </TouchableOpacity>
                     </View>
@@ -161,17 +226,20 @@ const SearchScreen = ({ navigation }) => {
                             <TouchableOpacity 
                                 key={index} 
                                 style={styles.categoryItem}
+                                onPress={() => handleCategoryFilter(item.name)}
                             >
                                 <View 
                                     style={[
                                         styles.categoryIconContainer, 
-                                        { backgroundColor: item.color + '20' }
+                                        selectedCategory === item.name 
+                                            ? { backgroundColor: item.color } 
+                                            : { backgroundColor: item.color + '20' }
                                     ]}
                                 >
                                     <Ionicons 
                                         name={item.icon} 
                                         size={24} 
-                                        color={item.color} 
+                                        color={selectedCategory === item.name ? 'white' : item.color} 
                                     />
                                 </View>
                                 <Text style={styles.categoryText}>{item.name}</Text>
@@ -181,13 +249,19 @@ const SearchScreen = ({ navigation }) => {
                 </View>
             </View>
 
-            {/* Scrollable FlatList Section */}
             <FlatList
                 data={searchResults}
                 renderItem={renderRecommendedCourseItem}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item) => item.id}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.recommendedListContainer}
+                ListEmptyComponent={
+                    <View style={{ alignItems: 'center', marginTop: 50 }}>
+                        <Text style={{ fontSize: 18, color: '#666' }}>
+                            No courses found
+                        </Text>
+                    </View>
+                }
             />
         </SafeAreaView>
     );
