@@ -1,264 +1,327 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, FlatList } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { 
+    View, 
+    Text, 
+    TextInput, 
+    TouchableOpacity, 
+    FlatList, 
+    SafeAreaView, 
+    StyleSheet,
+    Dimensions,
+    ScrollView,
+    Image
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+const { width } = Dimensions.get('window');
 
 const SearchScreen = ({ navigation }) => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
 
+    const [hotTopics] = useState([
+        'React Native', 
+        'AI & Machine Learning', 
+        'Web Development', 
+        'Blockchain', 
+        'UX Design', 
+        'Cloud Computing'
+    ]);
 
-    const hotTopics = ['Java', 'SQL', 'Javascript', 'Python', 'Photoshop'];
-    // const categories = [
-    //     { icon: 'ios-business', name: 'Business' },
-    //     { icon: 'ios-pencil', name: 'Design' },
-    //     { icon: 'ios-code-slash', name: 'Code' },
-    //     { icon: 'ios-videocam', name: 'Movie' },
-    //     { icon: 'ios-chatbubbles', name: 'Language' },
-    // ];
+    const [categories] = useState([
+        { name: 'Programming', icon: 'code-outline', color: '#2196F3' },
+        { name: 'Design', icon: 'brush-outline', color: '#4CAF50' },
+        { name: 'Data Science', icon: 'analytics-outline', color: '#FF9800' },
+        { name: 'Business', icon: 'briefcase-outline', color: '#9C27B0' },
+        { name: 'Marketing', icon: 'megaphone-outline', color: '#FF5722' },
+        { name: 'Photography', icon: 'camera-outline', color: '#795548' }
+    ]);
 
-    // const categories = [
-    //     { icon: 'business', name: 'Business' }, // MaterialIcons name for Business icon
-    //     { icon: 'edit', name: 'Design' },          // MaterialIcons name for pencil/edit icon
-    //     { icon: 'code', name: 'Code' },          // MaterialIcons name for Code icon
-    //     { icon: 'movie', name: 'Movie' },        // MaterialIcons name for Movie/Videocam icon
-    //     { icon: 'language', name: 'Language' }, // MaterialIcons name for language
-    // ];
-
-    const categories = [
-        { icon: 'briefcase', name: 'Business' },        // Fixed
-        { icon: 'create-outline', name: 'Design' },      // Fixed
-        { icon: 'code-slash', name: 'Code' },      // Fixed
-        { icon: 'videocam', name: 'Movie' },              // Fixed
-        { icon: 'chatbubble-ellipses-outline', name: 'Language' },  // Fixed
-    ];
-
-    const recommendedCourses = [
-        {
-            name: 'Website Design',
-            author: 'Ramona Wulstchner',
-            price: '$590',
-            rating: 4.5,
-            reviews: '(1233)',
-            lessons: '9 lessons',
-            // image: require('../Assets/Images/basic-course-1.png')
+    const [searchResults, setSearchResults] = useState([
+        { 
+            title: 'Complete React Native Course', 
+            instructor: 'John Doe', 
+            rating: 4.5, 
+            students: 1200,
+            price: 29.99,
+            image: require('../Assets/Images/advanced-course-1.png') 
         },
-        {
-            // image: require('../Assets/Images/basic-course-2.png'),
-            name: 'UX Research For Beginners',
-            author: 'Olivia Wang',
-            price: '$290',
-            rating: 4.5,
-            reviews: '(1782)',
-            lessons: '12 lessons',
-            discount: "20% Off"
+        { 
+            title: 'Advanced Mobile Development', 
+            instructor: 'Jane Smith', 
+            rating: 4.8, 
+            students: 950,
+            price: 39.99,
+            image: require('../Assets/Images/advanced-course-1.png')
         },
-    ];
+        { 
+            title: 'Flutter & Dart Masterclass', 
+            instructor: 'Mike Johnson', 
+            rating: 4.6, 
+            students: 800,
+            price: 34.99,
+            image: require('../Assets/Images/advanced-course-1.png')
+        }
+    ]);
 
     const handleSearch = () => {
-        // In a real app, this would make an API call
-        // For now, let's simulate search results:
-        setSearchResults(recommendedCourses)
+        console.log('Searching for:', searchTerm);
     };
 
-
     const renderRecommendedCourseItem = ({ item }) => (
-        <TouchableOpacity style={styles.recommendedCourseItem}>
-            <View style={{ width: '100%', paddingTop: 10 }}>
-                <Text style={styles.recommendedCourseTitle}>{item.name}</Text>
-                <Text style={styles.recommendedCourseAuthor}>{item.author}</Text>
-                <View style={styles.courseDetails}>
-                    <Text style={styles.recommendedCoursePrice}>{item.price}</Text>
-                    <Text style={styles.recommendedCourseRating}>
-                        <Ionicons name='ios-star' size={10} color='gold' />
-                        {item.rating}  {item.reviews}
+        <TouchableOpacity 
+            style={styles.recommendedCourseItem}
+            onPress={() => navigation.navigate('CourseDetail', { courseId: item.id })}
+        >
+            <Image 
+                source={item.image} 
+                style={styles.courseImage} 
+                resizeMode="cover" 
+            />
+            <View style={styles.courseDetailsContainer}>
+                <Text style={styles.courseTitle} numberOfLines={2}>
+                    {item.title}
+                </Text>
+                <Text style={styles.courseInstructor}>
+                    {item.instructor}
+                </Text>
+                <View style={styles.courseMetrics}>
+                    <View style={styles.ratingContainer}>
+                        <Ionicons name="star" size={16} color="#FFD700" />
+                        <Text style={styles.ratingText}>{item.rating}</Text>
+                    </View>
+                    <Text style={styles.studentsText}>
+                        {item.students} students
+                    </Text>
+                    <Text style={styles.priceText}>
+                        ${item.price}
                     </Text>
                 </View>
             </View>
-            {item.discount && <Text style={{ color: 'red' }}>{item.discount}</Text>}
-            <Image
-                source={item.image}
-                style={{
-                    width: 70, height: 50, borderRadius: 10
-                }}
-            />
         </TouchableOpacity>
     );
 
-
     return (
-        <ScrollView style={{ padding: 15, backgroundColor: '#fff', flex: 1, marginTop: 30 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginRight: 10 }}>
-                    <Ionicons name='arrow-back' size={20} color='black' />
-                </TouchableOpacity>
-                <TextInput
-                    style={styles.searchInput}
-                    placeholder="Search course"
-                    placeholderTextColor="gray"
-                    value={searchTerm}
-                    onChangeText={setSearchTerm}
-                    onSubmitEditing={handleSearch} // Call handleSearch on Enter 
-                />
-                <TouchableOpacity style={styles.filterButton}>
-                    <Text style={styles.filterButtonText}>Filter</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.hotTopicsContainer}>
-                <Text style={styles.sectionTitle}>Hot topics</Text>
-                <View style={styles.hotTopicsList}>
-                    {hotTopics.map((topic, index) => (
-                        <TouchableOpacity key={index} style={styles.hotTopicItem}>
-                            <Text style={styles.hotTopicText}>{topic}</Text>
-                        </TouchableOpacity>
-                    ))}
-                </View>
-            </View>
-            <View style={styles.categoriesContainer}>
-                <Text style={styles.sectionTitle}>Categories</Text>
-                <View>
-                    <TouchableOpacity onPress={() => alert("Show All categories")}>
-                        <Text style={{ textAlign: 'right' }}>View more</Text>
+        <SafeAreaView style={styles.container}>
+            {/* Fixed Header Section */}
+            <View>
+                <View style={styles.searchContainer}>
+                    <TouchableOpacity 
+                        onPress={() => navigation.goBack()} 
+                        style={styles.backButton}
+                    >
+                        <Ionicons name='arrow-back' size={24} color='#333' />
                     </TouchableOpacity>
-                    <FlatList
-                        data={categories}
-                        renderItem={({ item }) => (
-                            <View key={item.name} style={styles.categoryItem}>
-                                <Ionicons name={item.icon} size={25} color='#2092FF' style={styles.categoryIcon} />
-                                <Text style={styles.categoryName}>{item.name}</Text>
-                                {/* <Ionicons name='ios-arrow-forward' size={20} color='#bbb' style={styles.categoryArrow} /> */}
-                            </View>
-                        )}
-                    />
+                    <View style={styles.searchInputContainer}>
+                        <TextInput
+                            style={styles.searchInput}
+                            placeholder="Search for courses"
+                            placeholderTextColor="gray"
+                            value={searchTerm}
+                            onChangeText={setSearchTerm}
+                            onSubmitEditing={handleSearch}
+                        />
+                        <TouchableOpacity style={styles.searchIcon}>
+                            <Ionicons name="search" size={20} color="#2092FF" />
+                        </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity style={styles.filterButton}>
+                        <Ionicons name="filter" size={20} color="white" />
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.sectionContainer}>
+                    <Text style={styles.sectionTitle}>Hot Topics</Text>
+                    <ScrollView 
+                        horizontal 
+                        showsHorizontalScrollIndicator={false}
+                    >
+                        {hotTopics.map((topic, index) => (
+                            <TouchableOpacity 
+                                key={index} 
+                                style={styles.topicChip}
+                            >
+                                <Text style={styles.topicText}>{topic}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                </View>
+
+                <View style={styles.sectionContainer}>
+                    <View style={styles.sectionHeader}>
+                        <Text style={styles.sectionTitle}>Categories</Text>
+                        <TouchableOpacity>
+                            <Text style={styles.viewMoreText}>View All</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                    >
+                        {categories.map((item, index) => (
+                            <TouchableOpacity 
+                                key={index} 
+                                style={styles.categoryItem}
+                            >
+                                <View 
+                                    style={[
+                                        styles.categoryIconContainer, 
+                                        { backgroundColor: item.color + '20' }
+                                    ]}
+                                >
+                                    <Ionicons 
+                                        name={item.icon} 
+                                        size={24} 
+                                        color={item.color} 
+                                    />
+                                </View>
+                                <Text style={styles.categoryText}>{item.name}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
                 </View>
             </View>
-            {searchResults.length > 0 && ( // Show search results if available 
-                <View>
-                    <View style={styles.recommendedCoursesContainer}>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between', marginBottom: 20
-                        }}>
-                            <Text style={styles.sectionTitle}>Recommended for you</Text>
-                            <TouchableOpacity onPress={() => alert("View all recommended courses")}>
-                                <Text style={{ textAlign: 'right' }}>View more</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <FlatList
-                            horizontal
-                            data={searchResults}
-                            keyExtractor={(item, index) => index.toString()} // ensure key prop is specified 
-                            renderItem={renderRecommendedCourseItem}
-                        />
-                    </View>
-                </View>
-            )}
-        </ScrollView>
+
+            {/* Scrollable FlatList Section */}
+            <FlatList
+                data={searchResults}
+                renderItem={renderRecommendedCourseItem}
+                keyExtractor={(item, index) => index.toString()}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.recommendedListContainer}
+            />
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    searchInput: {
-        height: 50,
-        borderWidth: 1,
-        borderColor: '#eee',
-        paddingHorizontal: 10,
-        borderRadius: 10,
-        flex: 1
+    container: {
+        flex: 1,
+        backgroundColor: '#FFFFFF'
     },
-    filterButton: {
-        marginLeft: 10,
-        padding: 12,
-        backgroundColor: '#2192FF', 
-        borderRadius: 10,
-        shadowColor: '#ccc', 
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.5, 
-        shadowRadius: 2
+    searchContainer: {
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        padding: 15
     },
-    filterButtonText: {
-        color: '#fff'
+    backButton: {
+        marginRight: 10
     },
-    sectionTitle: {
-        fontSize: 20, 
-        fontWeight: 'bold', 
-        marginBottom: 15
-    },
-    hotTopicsContainer: {
-        marginBottom: 20
-    },
-    hotTopicsList: {
+    searchInputContainer: {
+        flex: 1,
         flexDirection: 'row',
-        flexWrap: 'wrap'
+        alignItems: 'center',
+        backgroundColor: '#F5F5F5',
+        borderRadius: 12,
+        paddingHorizontal: 15
     },
-    hotTopicItem: {
-        marginRight: 10,
-        marginBottom: 10,
-        padding: 8, 
-        backgroundColor: '#eee', 
-        borderRadius: 15
-    },
-    hotTopicText: {
+    searchInput: {
+        flex: 1,
+        height: 50,
         fontSize: 16
     },
-    categoriesContainer: {
-        marginBottom: 20
+    searchIcon: {
+        marginLeft: 10
+    },
+    filterButton: {
+        backgroundColor: '#2092FF', 
+        padding: 12, 
+        borderRadius: 12,
+        marginLeft: 10
+    },
+    sectionContainer: {
+        paddingHorizontal: 15,
+        marginTop: 15
+    },
+    sectionHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 10
+    },
+    sectionTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#333'
+    },
+    viewMoreText: {
+        color: '#2092FF',
+        fontWeight: '600'
+    },
+    topicChip: {
+        backgroundColor: '#F0F0F0', 
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        borderRadius: 20, 
+        marginRight: 10
+    },
+    topicText: {
+        color: '#333'
     },
     categoryItem: {
-        flexDirection: 'row', 
         alignItems: 'center',
-        padding: 12,
-        borderBottomWidth: 1, 
-        borderBottomColor: '#eee',
-        // height:40
-    },
-    categoryIcon: {
         marginRight: 15
     },
-    categoryName: {
-        flex: 1,
-        fontSize: 17
+    categoryIconContainer: {
+        padding: 15,
+        borderRadius: 15,
+        marginBottom: 5
     },
-    categoryArrow: {
-        marginLeft: 10,
-    },
-    recommendedCoursesContainer: {
+    categoryText: {
+        fontSize: 14,
+        color: '#333'
     },
     recommendedCourseItem: {
-        flexDirection: 'row', 
-        justifyContent: 'space-between',
-        marginBottom: 20, 
-        borderRadius: 15, 
-        borderWidth: 1,
-        padding: 15, 
-        borderColor: '#ccc', 
-        shadowColor: '#ccc',
-        shadowOffset: { width: 0, height: 1 }, 
-        shadowOpacity: 0.2, 
-        shadowRadius: 2
+        flexDirection: 'row',
+        backgroundColor: '#F9F9F9',
+        borderRadius: 15,
+        padding: 15,
+        marginBottom: 15,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3
     },
-    recommendedCourseTitle: {
-        fontSize: 15,
+    courseImage: {
+        width: 100,
+        height: 100,
+        borderRadius: 10,
+        marginRight: 15
+    },
+    courseDetailsContainer: {
+        flex: 1,
+        justifyContent: 'space-between'
+    },
+    courseTitle: {
+        fontSize: 16,
         fontWeight: 'bold',
-        width: '80%'
+        color: '#333',
+        marginBottom: 5
     },
-    recommendedCourseAuthor: {
-        color: '#aaa'
+    courseInstructor: {
+        color: '#666',
+        marginBottom: 5
     },
-    recommendedCoursePrice: {
-        fontWeight: 'bold'
+    courseMetrics: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
-    courseDetails: {
-        flexDirection: 'row', 
-        justifyContent: 'space-between',
+    ratingContainer: {
+        flexDirection: 'row',
         alignItems: 'center'
     },
-    recommendedCourseRating: {
-        flexDirection: 'row', 
-        alignItems: 'center'
+    ratingText: {
+        marginLeft: 5,
+        color: '#333'
     },
+    studentsText: {
+        color: '#666'
+    },
+    priceText: {
+        fontWeight: 'bold',
+        color: '#2092FF'
+    }
 });
-
 
 export default SearchScreen;

@@ -43,7 +43,6 @@ export default function Login({ navigation }) {
                 >
                     <Text style={styles.buttonText}>GET STARTED →</Text>
                 </TouchableOpacity>
-
             </View>
         </View>
     )
@@ -51,8 +50,8 @@ export default function Login({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         paddingTop: 40,
-        marginTop: -25,
         backgroundColor: '#fff',
         borderTopRightRadius: 30,
         borderTopLeftRadius: 30
@@ -65,9 +64,9 @@ const styles = StyleSheet.create({
     formContainer: {
         padding: 20,
         paddingTop: 40,
-        marginTop: -25,
         borderTopRightRadius: 30,
-        borderTopLeftRadius: 30
+        borderTopLeftRadius: 30,
+        backgroundColor: '#fff',
     },
     welcomeText: {
         fontSize: 35,
@@ -92,7 +91,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10
+        borderRadius: 10,
     },
     buttonText: {
         color: '#fff',
