@@ -23,6 +23,7 @@ import CourseChapter from './App/Pages/CourseChapter';
 import PlayVideo from './App/Pages/PlayVideo';
 import SearchScreen from './App/Pages/SearchScreen';
 import ReviewScreen from './App/Pages/ReviewScreen';
+import EditProfileScreen from './App/Pages/EditProfileScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,6 +53,7 @@ export default function App() {
         <Stack.Screen name="CourseChapter" component={CourseChapter} />
         <Stack.Screen name="PlayVideo" component={PlayVideo} />
         <Stack.Screen name="ReviewScreen" component={ReviewScreen} />
+        <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
