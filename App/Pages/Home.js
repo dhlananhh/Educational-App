@@ -10,7 +10,6 @@ import BannerComponent from './Sub-Components/BannerComponent';
 import VideoCourseComponent from './Sub-Components/VideoCourseComponent';
 import BasicCourseComponent from './Sub-Components/BasicCourseComponent';
 import AdvancedCourseComponent from './Sub-Components/AdvancedCourseComponent';
-import EditProfileScreen from './EditProfileScreen';
 
 const Home = ({ navigation, route }) => {
     const { name } = route.params;
@@ -18,10 +17,6 @@ const Home = ({ navigation, route }) => {
 
     const handleSearchPress = () => {
         nav.navigate('SearchScreen');
-    };
-
-    const handleProfilePress = () => {
-        nav.navigate('EditProfileScreen'); 
     };
 
     return (
@@ -32,14 +27,12 @@ const Home = ({ navigation, route }) => {
                     Services.Logout();
                     navigation.navigate('Login');
                 }}  
-                onProfilePress={handleProfilePress}
-
             />
             <ScrollView 
                 contentContainerStyle={styles.scrollViewContent}
                 showsVerticalScrollIndicator={false}
             >
-                <SearchBarComponent onPress={handleSearchPress} />
+                {/* <SearchBarComponent onPress={handleSearchPress} /> */}
 
                 <BannerComponent />
                 <VideoCourseComponent />
